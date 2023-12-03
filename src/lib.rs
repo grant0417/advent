@@ -1,3 +1,5 @@
-pub mod day1;
-pub mod day2;
+pub mod _2022;
+pub mod _2023;
+#[allow(unused_variables)]
+pub mod day_template;
 pub mod util;

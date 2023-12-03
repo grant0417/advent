@@ -39,6 +39,7 @@ mod tests {
 
     use super::*;
 
+    const YEAR: u32 = 2023;
     const DAY: u32 = 1;
 
     #[test]
@@ -49,7 +50,7 @@ mod tests {
 
     #[tokio::test]
     async fn part1_solve() {
-        let input = util::input(DAY).await;
+        let input = util::input(YEAR, DAY).await;
         assert_eq!(part1(&input), "54601");
     }
 
@@ -61,7 +62,7 @@ mod tests {
 
     #[tokio::test]
     async fn part2_solve() {
-        let input = util::input(DAY).await;
+        let input = util::input(YEAR, DAY).await;
         assert_eq!(part2(&input), "54078");
     }
 }
