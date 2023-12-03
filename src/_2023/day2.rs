@@ -113,6 +113,7 @@ mod tests {
 
     use super::*;
 
+    const YEAR: u32 = 2023;
     const DAY: u32 = 2;
 
     const EXAMPLE: &str = "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
@@ -128,7 +129,7 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";
 
     #[tokio::test]
     async fn part1_solve() {
-        let input = util::input(DAY).await;
+        let input = util::input(YEAR, DAY).await;
         assert_eq!(part1(&input), "2283");
     }
 
@@ -139,7 +140,7 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";
 
     #[tokio::test]
     async fn part2_solve() {
-        let input = util::input(DAY).await;
+        let input = util::input(YEAR, DAY).await;
         assert_eq!(part2(&input), "78669");
     }
 }
