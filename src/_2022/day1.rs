@@ -1,3 +1,5 @@
+#![allow(clippy::needless_range_loop)]
+
 pub fn part1(input: &str) -> impl ToString {
     let elfs = input.split("\n\n");
 
@@ -10,7 +12,7 @@ pub fn part1(input: &str) -> impl ToString {
         );
     }
 
-    most.to_string()
+    most
 }
 
 pub fn part2(input: &str) -> impl ToString {

@@ -1,6 +1,6 @@
 use aho_corasick::AhoCorasick;
 
-pub fn part1(input: &str) -> String {
+pub fn part1(input: &str) -> impl ToString {
     input
         .lines()
         .map(|line| {
@@ -10,15 +10,14 @@ pub fn part1(input: &str) -> String {
             first * 10 + last
         })
         .sum::<u32>()
-        .to_string()
 }
 
-pub fn part2(input: &str) -> String {
+pub fn part2(input: &str) -> impl ToString {
     let nums = [
         "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "1", "2", "3", "4",
         "5", "6", "7", "8", "9",
     ];
-    let ac = AhoCorasick::new(&nums).unwrap();
+    let ac = AhoCorasick::new(nums).unwrap();
 
     input
         .lines()
@@ -30,7 +29,6 @@ pub fn part2(input: &str) -> String {
             first * 10 + last
         })
         .sum::<u32>()
-        .to_string()
 }
 
 #[cfg(test)]
@@ -45,24 +43,24 @@ mod tests {
     #[test]
     fn part1_example() {
         let input = "1abc2\npqr3stu8vwx\na1b2c3d4e5f\ntreb7uchet";
-        assert_eq!(part1(&input), "142");
+        assert_eq!(part1(&input).to_string(), "142");
     }
 
     #[tokio::test]
     async fn part1_solve() {
         let input = util::input(YEAR, DAY).await;
-        assert_eq!(part1(&input), "54601");
+        assert_eq!(part1(&input).to_string(), "54601");
     }
 
     #[test]
     fn part2_example() {
         let input = "two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen";
-        assert_eq!(part2(&input), "281");
+        assert_eq!(part2(&input).to_string(), "281");
     }
 
     #[tokio::test]
     async fn part2_solve() {
         let input = util::input(YEAR, DAY).await;
-        assert_eq!(part2(&input), "54078");
+        assert_eq!(part2(&input).to_string(), "54078");
     }
 }

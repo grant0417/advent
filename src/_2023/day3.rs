@@ -1,4 +1,4 @@
-pub fn part1(input: &str) -> String {
+pub fn part1(input: &str) -> impl ToString {
     let engine: Vec<Vec<char>> = input.lines().map(|line| line.chars().collect()).collect();
 
     let height = engine.len();
@@ -16,7 +16,7 @@ pub fn part1(input: &str) -> String {
                     continue;
                 }
                 let c = engine[y as usize][x as usize];
-                if !c.is_digit(10) && c != '.' {
+                if !c.is_ascii_digit() && c != '.' {
                     return true;
                 }
             }
@@ -56,10 +56,10 @@ pub fn part1(input: &str) -> String {
         }
     }
 
-    sum.to_string()
+    sum
 }
 
-pub fn part2(input: &str) -> String {
+pub fn part2(input: &str) -> impl ToString {
     let engine: Vec<Vec<char>> = input.lines().map(|line| line.chars().collect()).collect();
 
     let height = engine.len();
@@ -135,7 +135,6 @@ pub fn part2(input: &str) -> String {
                 .sum::<i32>()
         })
         .sum::<i32>()
-        .to_string()
 }
 
 #[cfg(test)]
@@ -160,23 +159,23 @@ mod tests {
 
     #[test]
     fn part1_example() {
-        assert_eq!(part1(EXAMPLE), "4361");
+        assert_eq!(part1(EXAMPLE).to_string(), "4361");
     }
 
     #[tokio::test]
     async fn part1_solve() {
         let input = util::input(YEAR, DAY).await;
-        assert_eq!(part1(&input), "514969");
+        assert_eq!(part1(&input).to_string(), "514969");
     }
 
     #[test]
     fn part2_example() {
-        assert_eq!(part2(EXAMPLE), "467835");
+        assert_eq!(part2(EXAMPLE).to_string(), "467835");
     }
 
     #[tokio::test]
     async fn part2_solve() {
         let input = util::input(YEAR, DAY).await;
-        assert_eq!(part2(&input), "78915902");
+        assert_eq!(part2(&input).to_string(), "78915902");
     }
 }
