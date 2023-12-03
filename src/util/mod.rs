@@ -40,12 +40,16 @@ mod tests {
 
     #[tokio::test]
     async fn test_input() {
-        let i = input(2022, 1).await;
-        println!("{}", i);
-        assert!(!i.is_empty());
+        let data_2021 = input(2021, 1).await;
+        println!("{data_2021}");
+        assert!(!data_2021.is_empty());
 
-        let i = input(2023, 1).await;
-        println!("{}", i);
-        assert!(!i.is_empty());
+        let data_2022 = input(2022, 1).await;
+        println!("{data_2022}");
+        assert!(!data_2022.is_empty());
+
+        let data_2023 = input(2023, 1).await;
+        println!("{data_2023}");
+        assert!(!data_2023.is_empty());
     }
 }
