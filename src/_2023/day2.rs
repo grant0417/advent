@@ -84,7 +84,7 @@ impl Cubes {
     }
 }
 
-pub fn part1(input: &str) -> String {
+pub fn part1(input: &str) -> impl ToString {
     let reds = 12;
     let greens = 13;
     let blues = 14;
@@ -95,16 +95,14 @@ pub fn part1(input: &str) -> String {
         .filter(|c| c.possible(reds, greens, blues))
         .map(|c| c.id)
         .sum::<u32>()
-        .to_string()
 }
 
-pub fn part2(input: &str) -> String {
+pub fn part2(input: &str) -> impl ToString {
     input
         .lines()
         .map(Cubes::parse_game)
         .map(|c| c.min_cubes_power())
         .sum::<u32>()
-        .to_string()
 }
 
 #[cfg(test)]
@@ -124,23 +122,23 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";
 
     #[test]
     fn part1_example() {
-        assert_eq!(part1(EXAMPLE), "8");
+        assert_eq!(part1(EXAMPLE).to_string(), "8");
     }
 
     #[tokio::test]
     async fn part1_solve() {
         let input = util::input(YEAR, DAY).await;
-        assert_eq!(part1(&input), "2283");
+        assert_eq!(part1(&input).to_string(), "2283");
     }
 
     #[test]
     fn part2_example() {
-        assert_eq!(part2(EXAMPLE), "2286");
+        assert_eq!(part2(EXAMPLE).to_string(), "2286");
     }
 
     #[tokio::test]
     async fn part2_solve() {
         let input = util::input(YEAR, DAY).await;
-        assert_eq!(part2(&input), "78669");
+        assert_eq!(part2(&input).to_string(), "78669");
     }
 }

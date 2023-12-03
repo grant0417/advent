@@ -1,13 +1,16 @@
 const DATA_PATH: &str = "data/";
 
-fn cookie() -> String {
-    std::fs::read_to_string(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("advent-cookie"))
-        .unwrap()
+async fn cookie() -> String {
+    tokio::fs::read_to_string(
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("advent-cookie"),
+    )
+    .await
+    .unwrap()
 }
 
 pub async fn input(year: u32, day: u32) -> String {
     assert!(year >= 2015);
-    assert!(day >= 1 && day <= 25);
+    assert!((1..=25).contains(&day));
 
     let file_path = format!("{DATA_PATH}/{year}/day{day}.txt");
     match tokio::fs::read_to_string(&file_path).await {
@@ -17,7 +20,7 @@ pub async fn input(year: u32, day: u32) -> String {
             let client = reqwest::Client::new();
             let res = client
                 .get(&url)
-                .header("Cookie", cookie())
+                .header("Cookie", cookie().await)
                 .send()
                 .await
                 .unwrap();
