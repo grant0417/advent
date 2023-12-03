@@ -44,20 +44,22 @@ mod tests {
     const YEAR: u32 = 2022;
     const DAY: u32 = 1;
 
-    const EXAMPLE: &str = "1000
-2000
-3000
+    const EXAMPLE: &str = indoc::indoc! {"
+        1000
+        2000
+        3000
 
-4000
+        4000
 
-5000
-6000
+        5000
+        6000
 
-7000
-8000
-9000
+        7000
+        8000
+        9000
 
-10000";
+        10000
+    "};
 
     #[test]
     fn part1_example() {

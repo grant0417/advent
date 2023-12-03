@@ -100,9 +100,11 @@ mod tests {
     const YEAR: u32 = 2022;
     const DAY: u32 = 2;
 
-    const EXAMPLE: &str = "A Y
-B X
-C Z";
+    const EXAMPLE: &str = indoc::indoc! {"
+        A Y
+        B X
+        C Z
+    "};
 
     #[test]
     fn part1_example() {
