@@ -1,4 +1,6 @@
 [alias]
+t19 = "nextest run -E test(~2021)"
+t20 = "nextest run -E test(~2021)"
 t21 = "nextest run -E test(~2021)"
 t22 = "nextest run -E test(~2022)"
 t23 = "nextest run -E test(~2023)"
