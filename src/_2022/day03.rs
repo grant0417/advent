@@ -1,9 +1,9 @@
 use itertools::Itertools as _;
 
 fn priority(c: char) -> u32 {
-    if ('a'..='z').contains(&c) {
+    if c.is_ascii_lowercase() {
         c as u32 - 'a' as u32 + 1
-    } else if ('A'..='Z').contains(&c) {
+    } else if c.is_ascii_uppercase() {
         c as u32 - 'A' as u32 + 27
     } else {
         panic!("invalid char: {c}");
