@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use ahash::HashMap;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 enum Cave {
@@ -29,7 +29,7 @@ struct CaveSystem {
 impl CaveSystem {
     fn new() -> CaveSystem {
         CaveSystem {
-            adjacency_list: HashMap::new(),
+            adjacency_list: HashMap::default(),
         }
     }
 
@@ -111,7 +111,7 @@ fn parse_input(input: impl AsRef<str>) -> CaveSystem {
 pub fn part1(input: &str) -> impl ToString {
     let cave_system = parse_input(input);
 
-    let paths: Vec<_> = find_paths(&Cave::Start, &cave_system, &HashMap::new(), false);
+    let paths: Vec<_> = find_paths(&Cave::Start, &cave_system, &HashMap::default(), false);
 
     paths.len()
 }
@@ -119,7 +119,7 @@ pub fn part1(input: &str) -> impl ToString {
 pub fn part2(input: &str) -> impl ToString {
     let cave_system = parse_input(input);
 
-    let paths: Vec<_> = find_paths(&Cave::Start, &cave_system, &HashMap::new(), true);
+    let paths: Vec<_> = find_paths(&Cave::Start, &cave_system, &HashMap::default(), true);
 
     paths.len()
 }
