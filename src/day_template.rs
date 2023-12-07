@@ -1,8 +1,14 @@
+fn parse_input(input: &str) -> String {
+    input.to_owned()
+}
+
 pub fn part1(input: &str) -> impl ToString {
+    let _ = parse_input(input);
     0
 }
 
 pub fn part2(input: &str) -> impl ToString {
+    let _ = parse_input(input);
     0
 }
 
