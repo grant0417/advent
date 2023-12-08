@@ -104,8 +104,8 @@ pub fn part1(input: &str) -> impl ToString {
             let light = map_number(&maps.water_to_light, water);
             let temperature = map_number(&maps.light_to_temperature, light);
             let humidity = map_number(&maps.temperature_to_humidity, temperature);
-            let location = map_number(&maps.humidity_to_location, humidity);
-            location
+            
+            map_number(&maps.humidity_to_location, humidity)
         })
         .min()
         .unwrap()
@@ -124,8 +124,8 @@ pub fn part2(input: &str) -> impl ToString {
             let light = map_number(&maps.water_to_light, water);
             let temperature = map_number(&maps.light_to_temperature, light);
             let humidity = map_number(&maps.temperature_to_humidity, temperature);
-            let location = map_number(&maps.humidity_to_location, humidity);
-            location
+            
+            map_number(&maps.humidity_to_location, humidity)
         })
         .min()
         .unwrap()

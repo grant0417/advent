@@ -43,7 +43,7 @@ mod tests {
     #[test]
     fn part1_example() {
         let input = "1abc2\npqr3stu8vwx\na1b2c3d4e5f\ntreb7uchet";
-        assert_eq!(part1(&input).to_string(), "142");
+        assert_eq!(part1(input).to_string(), "142");
     }
 
     #[tokio::test]
@@ -55,7 +55,7 @@ mod tests {
     #[test]
     fn part2_example() {
         let input = "two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen";
-        assert_eq!(part2(&input).to_string(), "281");
+        assert_eq!(part2(input).to_string(), "281");
     }
 
     #[tokio::test]
