@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use ahash::HashMap;
 
 #[derive(Debug)]
 struct Hand {
@@ -231,14 +231,14 @@ fn parse_input(input: &str, jokers: bool) -> Vec<Hand> {
     input
         .lines()
         .map(|line| {
-            let (cards, bid) = line.split_once(" ").unwrap();
+            let (cards, bid) = line.split_once(' ').unwrap();
             let cards = cards
                 .chars()
                 .map(|c| char_to_u8(c, jokers))
                 .collect::<Vec<_>>();
             let bid = bid.parse::<usize>().unwrap();
 
-            let mut map = HashMap::new();
+            let mut map = HashMap::default();
             for &c in &cards {
                 *map.entry(c).or_insert(0) += 1;
             }
@@ -250,13 +250,13 @@ fn parse_input(input: &str, jokers: bool) -> Vec<Hand> {
 
 pub fn part1(input: &str) -> impl ToString {
     let mut hands = parse_input(input, false);
-    hands.sort_by(|a, b| a.compare_cards(b));
+    hands.sort_unstable_by(|a, b| a.compare_cards(b));
     sum_hands(&hands)
 }
 
 pub fn part2(input: &str) -> impl ToString {
     let mut hands = parse_input(input, true);
-    hands.sort_by(|a, b| a.comapre_cards_jokers(b));
+    hands.sort_unstable_by(|a, b| a.comapre_cards_jokers(b));
     sum_hands(&hands)
 }
 

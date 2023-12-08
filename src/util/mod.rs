@@ -1,3 +1,5 @@
+pub mod math;
+
 const DATA_PATH: &str = "data/";
 
 async fn cookie() -> String {
