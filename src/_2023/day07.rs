@@ -66,70 +66,6 @@ impl Hand {
         self.cmp_orders(other)
     }
 
-    fn comapre_cards_jokers(&self, other: &Self) -> std::cmp::Ordering {
-        let five_compare = run_cmp(
-            self.is_five_of_a_kind_joker(),
-            other.is_five_of_a_kind_joker(),
-            self,
-            other,
-        );
-        if five_compare != std::cmp::Ordering::Equal {
-            return five_compare;
-        }
-
-        let four_compare = run_cmp(
-            self.is_four_of_a_kind_joker(),
-            other.is_four_of_a_kind_joker(),
-            self,
-            other,
-        );
-        if four_compare != std::cmp::Ordering::Equal {
-            return four_compare;
-        }
-
-        let full_compare = run_cmp(
-            self.is_full_house_joker(),
-            other.is_full_house_joker(),
-            self,
-            other,
-        );
-        if full_compare != std::cmp::Ordering::Equal {
-            return full_compare;
-        }
-
-        let three_compare = run_cmp(
-            self.is_three_of_a_kind_joker(),
-            other.is_three_of_a_kind_joker(),
-            self,
-            other,
-        );
-        if three_compare != std::cmp::Ordering::Equal {
-            return three_compare;
-        }
-
-        let two_compare = run_cmp(
-            self.is_two_pairs_joker(),
-            other.is_two_pairs_joker(),
-            self,
-            other,
-        );
-        if two_compare != std::cmp::Ordering::Equal {
-            return two_compare;
-        }
-
-        let one_compare = run_cmp(
-            self.is_one_pair_joker(),
-            other.is_one_pair_joker(),
-            self,
-            other,
-        );
-        if one_compare != std::cmp::Ordering::Equal {
-            return one_compare;
-        }
-
-        self.cmp_orders(other)
-    }
-
     fn cmp_orders(&self, other: &Self) -> std::cmp::Ordering {
         for i in 0..5 {
             let left = self.cards[i];
@@ -146,64 +82,24 @@ impl Hand {
         self.map.values().any(|&v| v == 5)
     }
 
-    fn is_five_of_a_kind_joker(&self) -> bool {
-        self.map.values().any(|&v| v == 5)
-            || self.map.values().any(|&v| v == 4) && self.map.get(&0) == Some(&1)
-            || self.map.values().any(|&v| v == 3) && self.map.get(&0) == Some(&2)
-            || self.map.values().any(|&v| v == 2) && self.map.get(&0) == Some(&3)
-            || self.map.values().any(|&v| v == 1) && self.map.get(&0) == Some(&4)
-    }
-
     fn is_four_of_a_kind(&self) -> bool {
         self.map.values().any(|&v| v == 4)
-    }
-
-    fn is_four_of_a_kind_joker(&self) -> bool {
-        self.map.values().any(|&v| v == 4)
-            || self.map.values().any(|&v| v == 3) && self.map.get(&0) == Some(&1)
-            || self
-                .map
-                .iter()
-                .filter(|(&k, _)| k != 0)
-                .any(|(_, &v)| v == 2)
-                && self.map.get(&0) == Some(&2)
-            || self.map.values().any(|&v| v == 1) && self.map.get(&0) == Some(&3)
     }
 
     fn is_full_house(&self) -> bool {
         self.map.values().any(|&v| v == 3) && self.map.values().any(|&v| v == 2)
     }
 
-    fn is_full_house_joker(&self) -> bool {
-        self.map.values().any(|&v| v == 3) && self.map.values().any(|&v| v == 2)
-            || self.map.values().filter(|&&v| v == 2).count() == 2 && self.map.get(&0) == Some(&1)
-    }
-
     fn is_three_of_a_kind(&self) -> bool {
         self.map.values().any(|&v| v == 3)
-    }
-
-    fn is_three_of_a_kind_joker(&self) -> bool {
-        self.map.values().any(|&v| v == 3)
-            || self.map.values().any(|&v| v == 2) && self.map.get(&0) == Some(&1)
-            || self.map.values().any(|&v| v == 1) && self.map.get(&0) == Some(&2)
     }
 
     fn is_two_pairs(&self) -> bool {
         self.map.values().filter(|&&v| v == 2).count() == 2
     }
 
-    fn is_two_pairs_joker(&self) -> bool {
-        self.map.values().filter(|&&v| v == 2).count() == 2
-            || self.map.values().any(|&v| v == 2) && self.map.get(&0) == Some(&1)
-    }
-
     fn is_one_pair(&self) -> bool {
         self.map.values().any(|&v| v == 2)
-    }
-
-    fn is_one_pair_joker(&self) -> bool {
-        self.map.values().any(|&v| v == 2) || self.map.get(&0) == Some(&1)
     }
 }
 
@@ -239,8 +135,24 @@ fn parse_input(input: &str, jokers: bool) -> Vec<Hand> {
             let bid = bid.parse::<usize>().unwrap();
 
             let mut map = HashMap::default();
+            let mut joker_count = 0;
             for &c in &cards {
-                *map.entry(c).or_insert(0) += 1;
+                if c == 0 && jokers {
+                    joker_count += 1;
+                } else {
+                    *map.entry(c).or_insert(0) += 1;
+                }
+            }
+
+            // add jokers to the card with the highest value
+            if jokers {
+                let max_value = *map.values().max().unwrap_or(&0);
+                match map.iter_mut().find(|(_, v)| **v == max_value) {
+                    Some((_, v)) => *v += joker_count,
+                    None => {
+                        map.insert(0, joker_count);
+                    }
+                }
             }
 
             Hand { cards, bid, map }
@@ -256,7 +168,7 @@ pub fn part1(input: &str) -> impl ToString {
 
 pub fn part2(input: &str) -> impl ToString {
     let mut hands = parse_input(input, true);
-    hands.sort_unstable_by(|a, b| a.comapre_cards_jokers(b));
+    hands.sort_unstable_by(|a, b| a.compare_cards(b));
     sum_hands(&hands)
 }
 

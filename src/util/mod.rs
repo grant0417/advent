@@ -1,4 +1,6 @@
 pub mod math;
+pub mod grid;
+pub mod point;
 
 const DATA_PATH: &str = "data/";
 
