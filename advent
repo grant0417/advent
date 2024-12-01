@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import argparse
+import re
+
+TEMPLATE_PATH = "src/day_template.rs"
+
+YEAR_RE = re.compile(r"const YEAR: u32 = (\d+);")
+DAY_RE = re.compile(r"const DAY: u32 = (\d+);")
+
+
+# Subcommands
+
+
+def day(args: argparse.Namespace):
+    year = args.year
+    day = args.day
+
+    year_folder = f"src/_{year}"
+    mod_path = f"{year_folder}/mod.rs"
+    day_path = f"src/_{year}/day{day:>02}.rs"
+
+    if os.path.exists(day_path):
+        print(f"Day {day} already exists")
+        sys.exit(1)
+
+    if not os.path.exists(year_folder):
+        os.makedirs(year_folder)
+        with open(mod_path, "w") as mod_file:
+            mod_file.write("pub mod day01;\n")
+        print(f"Created {mod_path}")
+    else:
+        with open(mod_path, "a") as mod_file:
+            mod_file.write(f"pub mod day{day:>02};\n")
+        print(f"Updated {mod_path}")
+
+    template = open(TEMPLATE_PATH, "r")
+    os.makedirs(os.path.dirname(day_path), exist_ok=True)
+    with open(day_path, "w") as day_file:
+        template_str = template.read()
+
+        template_str = YEAR_RE.sub(f"const YEAR: u32 = {year};", template_str)
+        template_str = DAY_RE.sub(f"const DAY: u32 = {day};", template_str)
+
+        day_file.write(template_str)
+    template.close()
+    print(f"Created {day_path}")
+
+
+def test(args: argparse.Namespace):
+    year = args.year
+    day = args.day
+    if day is not None:
+        os.system(f"cargo nextest run -E 'test(/^_{year}::day{day:>02}/)'")
+    else:
+        os.system(f"cargo nextest run -E 'test(/^_{year}/)'")
+
+
+# Main
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(prog="advent")
+    subparsers = parser.add_subparsers()
+
+    day_parser = subparsers.add_parser("day")
+    day_parser.add_argument("year", type=int)
+    day_parser.add_argument("day", type=int)
+    day_parser.set_defaults(func=day)
+
+    test_parser = subparsers.add_parser("test")
+    test_parser.add_argument("year", type=int)
+    test_parser.add_argument("day", type=int, nargs="?")
+    test_parser.set_defaults(func=test)
+
+    return parser.parse_args()
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    args.func(args)
