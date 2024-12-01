@@ -1,15 +1,19 @@
-pub mod math;
 pub mod grid;
+pub mod math;
 pub mod point;
 
 const DATA_PATH: &str = "data/";
 
 async fn cookie() -> String {
-    tokio::fs::read_to_string(
-        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("advent-cookie"),
-    )
-    .await
-    .unwrap()
+    let env_path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join(".env");
+    let env = tokio::fs::read_to_string(env_path).await.unwrap();
+    let (_, cookie) = env
+        .lines()
+        .find(|line| line.starts_with("AOC_COOKIE"))
+        .unwrap()
+        .split_once('=')
+        .unwrap();
+    cookie.to_string()
 }
 
 pub async fn input(year: u32, day: u32) -> String {
