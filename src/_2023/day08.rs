@@ -1,6 +1,4 @@
-use ahash::HashMap;
-
-use crate::util::math::lcm;
+use crate::prelude::*;
 
 fn parse_input(input: &str) -> (Vec<char>, HashMap<String, (String, String)>) {
     let mut lines = input.lines();
