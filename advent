@@ -65,10 +65,10 @@ def parse_args():
     parser = argparse.ArgumentParser(prog="advent")
     subparsers = parser.add_subparsers()
 
-    day_parser = subparsers.add_parser("day")
-    day_parser.add_argument("year", type=int)
-    day_parser.add_argument("day", type=int)
-    day_parser.set_defaults(func=day)
+    add_parser = subparsers.add_parser("add")
+    add_parser.add_argument("year", type=int)
+    add_parser.add_argument("day", type=int)
+    add_parser.set_defaults(func=day)
 
     test_parser = subparsers.add_parser("test")
     test_parser.add_argument("year", type=int)
