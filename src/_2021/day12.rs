@@ -1,4 +1,4 @@
-use ahash::HashMap;
+use crate::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 enum Cave {

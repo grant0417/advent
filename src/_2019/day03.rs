@@ -1,4 +1,4 @@
-use ahash::{HashMap, HashSet};
+use crate::prelude::*;
 
 fn parse_line(input: &str) -> (&str, &str) {
     let mut lines = input.lines().map(|l| l.trim());

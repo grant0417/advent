@@ -1,6 +1,4 @@
-use ahash::HashMap;
-
-use crate::util::grid::Grid;
+use crate::prelude::*;
 
 fn sum_distances(grid: &Grid<char>, space: usize) -> usize {
     // Find the empty columns

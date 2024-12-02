@@ -7,5 +7,6 @@ pub mod _2024;
 #[allow(unused_variables)]
 pub mod day_template;
 pub mod util;
+pub mod prelude;
 
 pub use _2024::*;
