@@ -18,9 +18,14 @@ rustc-hash = "2.1.0"
 tokio = { version = "1.41.1", features = ["fs", "macros"] }
 
 [dev-dependencies]
-criterion = "0.5.1"
+criterion = { package = "codspeed-criterion-compat", version = "2.7.2" }
 
 [[bench]]
-name = "main"
+name = "2024_01"
 harness = false
-path = "bench.rs"
+path = "benches/2024_01.rs"
+
+[[bench]]
+name = "2024_02"
+harness = false
+path = "benches/2024_02.rs"
