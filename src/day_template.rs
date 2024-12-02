@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use crate::prelude::*;
 
 fn parse_input(input: &str) -> String {
     input.to_owned()
