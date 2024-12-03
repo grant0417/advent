@@ -1,8 +1,8 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
-use advent::day2::{part1, part2};
+use advent::day3::{part1, part2};
 
-const INPUT: &str = include_str!("../data/2024/day2.txt");
+const INPUT: &str = include_str!("../data/2024/day3.txt");
 
 fn bench_part1(c: &mut Criterion) {
     c.bench_function("part1", |b| b.iter(|| black_box(part1(black_box(INPUT)))));
