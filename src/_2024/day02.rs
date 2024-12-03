@@ -1,77 +1,83 @@
-use crate::{prelude::*, util::fast::fast_parse_u64};
+use crate::prelude::*;
+
+fn parse_input(input: &str) -> Vec<Vec<i64>> {
+    input
+        .lines()
+        .map(|l| {
+            l.split_ascii_whitespace()
+                .map(|i| i.parse().unwrap())
+                .collect()
+        })
+        .collect()
+}
 
 pub fn part1(input: &str) -> impl Display {
-    let mut safe = 0;
-    'line_loop: for line in input.lines() {
-        let mut is_increaseing = None;
+    let grid = parse_input(input);
 
-        let mut line = line.split_ascii_whitespace();
-        let mut prev = fast_parse_u64(line.next().unwrap()) as i64;
+    let mut safe = 0;
+    'line_loop: for line in grid {
+        let mut is_increaseing = None;
+        let mut prev = None;
 
         for curr in line {
-            let curr = fast_parse_u64(&curr) as i64;
+            if let Some(prev) = prev {
+                let increase = curr - prev > 0;
+                if let Some(is_increaseing) = is_increaseing {
+                    if is_increaseing != increase {
+                        continue 'line_loop;
+                    }
+                }
+                is_increaseing = Some(increase);
 
-            let diff: i64 = curr - prev;
-            let increase = diff > 0;
-            if let Some(is_increaseing) = is_increaseing {
-                if is_increaseing != increase {
+                let abs_diff = curr.abs_diff(prev);
+                if abs_diff < 1 || abs_diff > 3 {
                     continue 'line_loop;
                 }
             }
-            is_increaseing = Some(increase);
-
-            let abs_diff = diff.abs();
-            if abs_diff < 1 || abs_diff > 3 {
-                continue 'line_loop;
-            }
-            prev = curr;
+            prev = Some(curr);
         }
 
         safe += 1;
     }
+
     safe
 }
 
 pub fn part2(input: &str) -> impl Display {
+    let grid = parse_input(input);
+
     let mut safe = 0;
-    'line_loop: for line in input.lines() {
-        let mut is_increaseing = None;
-        let mut has_skipped = false;
+    for line in grid {
+        'try_loop: for i in 0..line.len() {
+            let mut safe_line = line.clone();
+            safe_line.remove(i);
 
-        let mut line = line.split_ascii_whitespace();
-        let mut prev = fast_parse_u64(line.next().unwrap()) as i64;
+            let mut is_increaseing = None;
+            let mut prev = None;
 
-        'item_loop: for curr in line {
-            let curr = fast_parse_u64(&curr) as i64;
+            for curr in safe_line {
+                if let Some(prev) = prev {
+                    let increase = curr - prev > 0;
+                    if let Some(is_increaseing) = is_increaseing {
+                        if is_increaseing != increase {
+                            continue 'try_loop;
+                        }
+                    }
+                    is_increaseing = Some(increase);
 
-            let diff: i64 = curr - prev;
-            let increase = diff > 0;
-            if let Some(is_increaseing) = is_increaseing {
-                if is_increaseing != increase {
-                    if !has_skipped {
-                        has_skipped = true;
-                        continue 'item_loop;
-                    } else {
-                        continue 'line_loop;
+                    let abs_diff = curr.abs_diff(prev);
+                    if abs_diff < 1 || abs_diff > 3 {
+                        continue 'try_loop;
                     }
                 }
+                prev = Some(curr);
             }
-            is_increaseing = Some(increase);
 
-            let abs_diff = diff.abs();
-            if abs_diff < 1 || abs_diff > 3 {
-                if !has_skipped {
-                    has_skipped = true;
-                    continue 'item_loop;
-                } else {
-                    continue 'line_loop;
-                }
-            }
-            prev = curr;
+            safe += 1;
+            break 'try_loop;
         }
-
-        safe += 1;
     }
+
     safe
 }
 
@@ -104,13 +110,11 @@ mod tests {
         assert_eq!(part1(&input).to_string(), "639");
     }
 
-    #[ignore = "broke"]
     #[test]
     fn part2_example() {
         assert_eq!(part2(EXAMPLE).to_string(), "4");
     }
 
-    #[ignore = "broke"]
     #[tokio::test]
     async fn part2_solve() {
         let input = util::input(YEAR, DAY).await;

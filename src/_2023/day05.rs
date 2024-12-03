@@ -82,14 +82,13 @@ fn parse_map(lines: &mut Lines) -> Vec<Mapping> {
 }
 
 fn map_number(map: &[Mapping], number: usize) -> usize {
-    let Some(mapping) = map
+    match map
         .iter()
         .find(|m| m.src_range_start <= number && number < m.src_range_start + m.range_len)
-    else {
-        return number;
-    };
-
-    number - mapping.src_range_start + mapping.dest_range_start
+    {
+        Some(mapping) => number - mapping.src_range_start + mapping.dest_range_start,
+        None => number,
+    }
 }
 
 pub fn part1(input: &str) -> impl ToString {
@@ -97,14 +96,14 @@ pub fn part1(input: &str) -> impl ToString {
 
     seeds
         .iter()
-        .map(|s| {
-            let soil = map_number(&maps.seed_to_soil, *s);
+        .map(|seed| {
+            let soil = map_number(&maps.seed_to_soil, *seed);
             let fertilizer = map_number(&maps.soil_to_fertilizer, soil);
             let water = map_number(&maps.fertilizer_to_water, fertilizer);
             let light = map_number(&maps.water_to_light, water);
             let temperature = map_number(&maps.light_to_temperature, light);
             let humidity = map_number(&maps.temperature_to_humidity, temperature);
-            
+
             map_number(&maps.humidity_to_location, humidity)
         })
         .min()
@@ -124,7 +123,7 @@ pub fn part2(input: &str) -> impl ToString {
             let light = map_number(&maps.water_to_light, water);
             let temperature = map_number(&maps.light_to_temperature, light);
             let humidity = map_number(&maps.temperature_to_humidity, temperature);
-            
+
             map_number(&maps.humidity_to_location, humidity)
         })
         .min()

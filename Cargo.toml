@@ -29,3 +29,9 @@ path = "benches/2024_01.rs"
 name = "2024_02"
 harness = false
 path = "benches/2024_02.rs"
+
+[[bench]]
+name = "2024_03"
+harness = false
+path = "benches/2024_03.rs"
+
