@@ -44,7 +44,8 @@ pub fn part1(input: &str) -> impl Display {
 
 pub fn part2(input: &str) -> impl Display {
     let mut list_a = Vec::with_capacity(CAPACITY);
-    let mut counts_b: std::collections::HashMap<u64, u64, FxBuildHasher> = HashMap::with_capacity_and_hasher(CAPACITY, FxBuildHasher);
+    let mut counts_b: std::collections::HashMap<u64, u64, FxBuildHasher> =
+        HashMap::with_capacity_and_hasher(CAPACITY, FxBuildHasher);
 
     let mut current_number = 0u64;
     let mut in_number = false;
