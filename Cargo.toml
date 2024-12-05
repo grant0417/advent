@@ -15,7 +15,7 @@ rayon = "1.10.0"
 regex = "1.11.1"
 reqwest = "0.12.9"
 rustc-hash = "2.1.0"
-tokio = { version = "1.41.1", features = ["fs", "macros"] }
+tokio = { version = "1.42.0", features = ["fs", "macros"] }
 
 [dev-dependencies]
 criterion = { package = "codspeed-criterion-compat", version = "2.7.2" }
@@ -34,4 +34,3 @@ path = "benches/2024_02.rs"
 name = "2024_03"
 harness = false
 path = "benches/2024_03.rs"
-

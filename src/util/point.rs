@@ -46,6 +46,13 @@ where
 macro_rules! impl_ops {
     ($t: ty) => {
         impl Point<$t> {
+            pub fn scale(&self, v: $t) -> Self {
+                Self {
+                    x: self.x * v,
+                    y: self.y * v,
+                }
+            }
+
             pub fn manhattan_distance(&self, other: &Self) -> $t {
                 (self.x as i64 - other.x as i64).abs() as $t
                     + (self.y as i64 - other.y as i64).abs() as $t
@@ -88,8 +95,16 @@ macro_rules! impl_ops {
     };
 }
 
+impl_ops!(u8);
+impl_ops!(u16);
+impl_ops!(u32);
+impl_ops!(u64);
 impl_ops!(usize);
+impl_ops!(i8);
+impl_ops!(i16);
+impl_ops!(i32);
 impl_ops!(i64);
+impl_ops!(isize);
 
 impl TryInto<Point<usize>> for Point<i64> {
     type Error = TryFromIntError;

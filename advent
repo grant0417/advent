@@ -18,6 +18,14 @@ def day(args: argparse.Namespace):
     year = args.year
     day = args.day
 
+    if year < 2015:
+        print("Year must be greater than 2015")
+        sys.exit(1)
+
+    if day > 25:
+        print("Day must be <= 25")
+        sys.exit(1)
+
     year_folder = f"src/_{year}"
     mod_path = f"{year_folder}/mod.rs"
     day_path = f"src/_{year}/day{day:>02}.rs"
