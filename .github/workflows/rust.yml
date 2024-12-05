@@ -28,5 +28,7 @@ jobs:
             ~/.cargo/git/db/
             target/
           key: cargo-clippy-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}-${{ steps.toolchain.outputs.cachekey }}
+      - name: Write age key to file
+        run: echo "${{ secrets.AGE_KEY }}" > .age-key
       - name: Run tests
         run: cargo test --verbose

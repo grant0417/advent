@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 
 import os
+from pathlib import Path
+import subprocess
 import sys
 import argparse
 import re
 
+AGE_PUBLIC_KEY = "age140duwh987gm560y9ka363t9jy2n476m7q9up0mqkuew6ptxer4pq8yejqr"
 TEMPLATE_PATH = "src/day_template.rs"
+
+ENCRYPTED_DIR = "data-encrypted"
+DECRYPTED_DIR = "data"
 
 YEAR_RE = re.compile(r"const YEAR: u32 = (\d+);")
 DAY_RE = re.compile(r"const DAY: u32 = (\d+);")
@@ -66,6 +72,81 @@ def test(args: argparse.Namespace):
         os.system(f"cargo nextest run -E 'test(/^_{year}/)'")
 
 
+def encrypt_file(src_file: Path, dest_file: Path) -> None:
+    try:
+        cmd = ["age", "-r", AGE_PUBLIC_KEY, "-o", dest_file, src_file]
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        if result.returncode != 0:
+            print(f"Error encrypting {src_file}: {result.stderr}")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to encrypt {src_file}: {e.stderr}")
+    except Exception as e:
+        print(f"Unexpected error while encrypting {src_file}: {str(e)}")
+
+
+def encrypt_directory(source_dir: str, dest_dir: str) -> None:
+    source_path = Path(source_dir)
+    dest_path = Path(dest_dir)
+
+    dest_path.mkdir(parents=True, exist_ok=True)
+
+    for current_dir, _, files in os.walk(source_path):
+        current_path = Path(current_dir)
+        rel_path = current_path.relative_to(source_path)
+
+        dest_dir_path = dest_path / rel_path
+        dest_dir_path.mkdir(parents=True, exist_ok=True)
+
+        for file in files:
+            source_file = current_path / file
+            dest_file = dest_dir_path / f"{file}.age"
+            if not dest_file.exists():
+                encrypt_file(source_file, dest_file)
+
+
+def decrypt_file(src_file: Path, dest_file: Path, private_key_file: Path) -> None:
+    try:
+        cmd = ["age", "--decrypt", "-i", private_key_file, "-o", dest_file, src_file]
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        if result.returncode != 0:
+            print(f"Error decrypting {src_file}: {result.stderr}")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to decrypt {src_file}: {e.stderr}")
+    except Exception as e:
+        print(f"Unexpected error while decrypting {src_file}: {str(e)}")
+
+
+def decrypt_directory(source_dir: str, dest_dir: str, private_key_file: str) -> None:
+    source_path = Path(source_dir)
+    dest_path = Path(dest_dir)
+    private_key_file = Path(private_key_file)
+    dest_path.mkdir(parents=True, exist_ok=True)
+
+    for current_dir, _, files in os.walk(source_path):
+        current_path = Path(current_dir)
+        rel_path = current_path.relative_to(source_path)
+        dest_dir_path = dest_path / rel_path
+        dest_dir_path.mkdir(parents=True, exist_ok=True)
+
+        for file in files:
+            if not file.endswith(".age"):
+                continue
+            source_file = current_path / file
+            dest_file = dest_dir_path / file[:-4]
+            if source_file.is_symlink():
+                print(f"Skipping symlink: {source_file}")
+                continue
+            decrypt_file(source_file, dest_file, private_key_file)
+
+
+def encrypt(_):
+    encrypt_directory(DECRYPTED_DIR, ENCRYPTED_DIR)
+
+
+def decrypt(_):
+    decrypt_directory(ENCRYPTED_DIR, DECRYPTED_DIR, ".age-key")
+
+
 # Main
 
 
@@ -82,6 +163,12 @@ def parse_args():
     test_parser.add_argument("year", type=int)
     test_parser.add_argument("day", type=int, nargs="?")
     test_parser.set_defaults(func=test)
+
+    encrypt_parser = subparsers.add_parser("encrypt")
+    encrypt_parser.set_defaults(func=encrypt)
+
+    decrypt_parser = subparsers.add_parser("decrypt")
+    decrypt_parser.set_defaults(func=decrypt)
 
     return parser.parse_args()
 

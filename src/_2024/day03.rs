@@ -10,7 +10,7 @@ enum Instruction {
     Dont,
 }
 
-fn parse_input<'a>(input: &'a str) -> impl Iterator<Item = Instruction> + 'a {
+fn parse_input(input: &str) -> impl Iterator<Item = Instruction> + '_ {
     static RE: LazyLock<Regex> =
         LazyLock::new(|| Regex::new(r"(mul\((\d*),(\d*)\)|do\(\)|don't\(\))").unwrap());
 
