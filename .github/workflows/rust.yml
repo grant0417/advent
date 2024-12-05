@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: sudo apt-get install -y age
       - uses: dtolnay/rust-toolchain@stable
         id: toolchain
       - uses: actions/cache@v4
