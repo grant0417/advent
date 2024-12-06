@@ -28,10 +28,12 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
             target/
-          key: cargo-clippy-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}-${{ steps.toolchain.outputs.cachekey }}
+          key: cargo-test-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}-${{ steps.toolchain.outputs.cachekey }}
+      - name: Install nextest
+        uses: taiki-e/install-action@nextest
       - name: Decrypt data
         run: |
           echo "${{ secrets.AGE_KEY }}" > .age-key
           ./advent decrypt
       - name: Run tests
-        run: cargo test --verbose
+        run: cargo nextest run
