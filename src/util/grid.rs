@@ -1,5 +1,6 @@
 use super::point::Point;
 
+#[derive(Clone)]
 pub struct Grid<T> {
     data: Vec<T>,
     width: usize,
@@ -17,6 +18,33 @@ impl Grid<char> {
             height += 1;
             data.extend(line.chars());
         }
+        Self {
+            data,
+            width,
+            height,
+        }
+    }
+}
+
+impl Grid<u8> {
+    pub fn parse_bytes(input: &str) -> Self {
+        let mut data = Vec::with_capacity(input.as_bytes().len());
+
+        let mut width = 0;
+        let mut height = 0;
+
+        for &b in input.as_bytes() {
+            if b == b'\n' {
+                height += 1;
+            } else {
+                if height == 0 {
+                    width += 1;
+                }
+
+                data.push(b);
+            }
+        }
+
         Self {
             data,
             width,
@@ -133,6 +161,22 @@ where
 {
     fn index_mut(&mut self, point: P) -> &mut Self::Output {
         self.get_mut(point.into()).unwrap()
+    }
+}
+
+impl<T> std::ops::Index<usize> for Grid<T> {
+    type Output = [T];
+
+    fn index(&self, y: usize) -> &Self::Output {
+        let start = y * self.width;
+        &self.data[start..start + self.width]
+    }
+}
+
+impl<T> std::ops::IndexMut<usize> for Grid<T> {
+    fn index_mut(&mut self, y: usize) -> &mut Self::Output {
+        let start = y * self.width;
+        &mut self.data[start..start + self.width]
     }
 }
 

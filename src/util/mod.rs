@@ -30,6 +30,10 @@ pub async fn input(year: u32, day: u32) -> String {
             let res = client
                 .get(&url)
                 .header("Cookie", cookie().await)
+                .header(
+                    "User-Agent",
+                    "github.com/grant0417/advent by grant@gurvis.net",
+                )
                 .send()
                 .await
                 .unwrap();
