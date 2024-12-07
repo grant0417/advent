@@ -11,3 +11,4 @@ pub use day03 as day3;
 pub use day04 as day4;
 pub use day05 as day5;
 pub use day06 as day6;
+pub mod day07;
