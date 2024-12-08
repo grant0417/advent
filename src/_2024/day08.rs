@@ -4,147 +4,94 @@ fn parse_input(input: &str) -> Grid<u8> {
     Grid::parse_bytes(input)
 }
 
-pub fn part1(input: &str) -> impl Display {
-    let grid = parse_input(input);
-
-    let mut points = HashMap::default();
+fn get_antennas(grid: &Grid<u8>) -> HashMap<u8, Vec<Point<i64>>> {
+    let mut antennas = HashMap::default();
     for (&c, point) in grid.iter() {
         if c != b'.' {
-            points.entry(c).or_insert_with(Vec::new).push(point);
+            antennas
+                .entry(c)
+                .or_insert_with(Vec::new)
+                .push(point.try_into().unwrap());
         }
     }
-
-    let mut annodes = Grid::new(grid.width(), grid.height());
-    for d in points.values() {
-        for i in 0..d.len() {
-            for j in (i + 1)..d.len() {
-                let p0 = d[i].map(|a| a as i64);
-                let p1 = d[j].map(|a| a as i64);
-
-                let max_y = p0.y.max(p1.y);
-                let min_y = p0.y.min(p1.y);
-
-                let max_x = p0.x.max(p1.x);
-                let min_x = p0.x.min(p1.x);
-
-                let dy = max_y - min_y;
-                let dx = max_x - min_x;
-
-                let mut a0 = p0;
-                let mut a1 = p1;
-
-                if a0.x > a1.x {
-                    a0.x += dx;
-                    a1.x -= dx;
-                } else {
-                    a0.x -= dx;
-                    a1.x += dx;
-                }
-
-                if a0.y > a1.y {
-                    a0.y += dy;
-                    a1.y -= dy;
-                } else {
-                    a0.y -= dy;
-                    a1.y += dy;
-                }
-
-                if let Ok(a0) = a0.try_into() {
-                    let a0: Point<usize> = a0;
-                    if let Some(p) = annodes.get_mut(a0) {
-                        *p = 1;
-                    }
-                }
-                if let Ok(a1) = a1.try_into() {
-                    let a1: Point<usize> = a1;
-                    if let Some(p) = annodes.get_mut(a1) {
-                        *p = 1;
-                    }
-                }
-            }
-        }
-    }
-
-    annodes.iter().map(|(&c, _)| c as usize).sum::<usize>()
+    antennas
 }
 
-pub fn part2(input: &str) -> impl Display {
-    let grid = parse_input(input);
-
-    let mut points = HashMap::default();
-    for (&c, point) in grid.iter() {
-        if c != b'.' {
-            points.entry(c).or_insert_with(Vec::new).push(point);
+fn set_annode(annodes: &mut Grid<u8>, point: Point<i64>) {
+    if let Ok(point) = point.try_into() {
+        let point: Point<usize> = point;
+        if let Some(p) = annodes.get_mut(point) {
+            *p = 1;
         }
     }
+}
 
-    let mut annodes = Grid::new(grid.width(), grid.height());
-    for d in points.values() {
-        for i in 0..d.len() {
-            for j in (i + 1)..d.len() {
-                let p0 = d[i].map(|a| a as i64);
-                let p1 = d[j].map(|a| a as i64);
+fn get_annodes(
+    antennas: &HashMap<u8, Vec<Point<i64>>>,
+    width: usize,
+    height: usize,
+    part2: bool,
+) -> Grid<u8> {
+    let mut annodes = Grid::new(width, height);
+    for points in antennas.values() {
+        for (i, &p0) in points.iter().enumerate() {
+            for &p1 in points.iter().skip(i + 1) {
+                let (min_y, max_y) = (p0.y.min(p1.y), p0.y.max(p1.y));
+                let (min_x, max_x) = (p0.x.min(p1.x), p0.x.max(p1.x));
 
-                let max_y = p0.y.max(p1.y);
-                let min_y = p0.y.min(p1.y);
-
-                let max_x = p0.x.max(p1.x);
-                let min_x = p0.x.min(p1.x);
-
-                let dy = max_y - min_y;
-                let dx = max_x - min_x;
+                let delta = Point {
+                    x: max_x - min_x,
+                    y: max_y - min_y,
+                };
 
                 let mut a0 = p0;
                 let mut a1 = p1;
 
-                if let Ok(a0) = a0.try_into() {
-                    let a0: Point<usize> = a0;
-                    if let Some(p) = annodes.get_mut(a0) {
-                        *p = 1;
-                    }
-                }
-                if let Ok(a1) = a1.try_into() {
-                    let a1: Point<usize> = a1;
-                    if let Some(p) = annodes.get_mut(a1) {
-                        *p = 1;
-                    }
+                if part2 {
+                    set_annode(&mut annodes, a0);
+                    set_annode(&mut annodes, a1);
                 }
 
-                for _ in 0..100 {
+                let iter = if part2 { width.max(height) } else { 1 };
+                for _ in 0..iter {
                     if a0.x > a1.x {
-                        a0.x += dx;
-                        a1.x -= dx;
+                        a0.x += delta.x;
+                        a1.x -= delta.x;
                     } else {
-                        a0.x -= dx;
-                        a1.x += dx;
+                        a0.x -= delta.x;
+                        a1.x += delta.x;
                     }
 
                     if a0.y > a1.y {
-                        a0.y += dy;
-                        a1.y -= dy;
+                        a0.y += delta.y;
+                        a1.y -= delta.y;
                     } else {
-                        a0.y -= dy;
-                        a1.y += dy;
+                        a0.y -= delta.y;
+                        a1.y += delta.y;
                     }
 
-                    if let Ok(a0) = a0.try_into() {
-                        let a0: Point<usize> = a0;
-                        if let Some(p) = annodes.get_mut(a0) {
-                            *p = 1;
-                        }
-                    }
-                    if let Ok(a1) = a1.try_into() {
-                        let a1: Point<usize> = a1;
-                        if let Some(p) = annodes.get_mut(a1) {
-                            *p = 1;
-                        }
-                    }
+                    set_annode(&mut annodes, a0);
+                    set_annode(&mut annodes, a1);
                 }
             }
         }
     }
+    annodes
+}
 
+fn solve(input: &str, part2: bool) -> usize {
+    let grid = parse_input(input);
+    let antennas = get_antennas(&grid);
+    let annodes = get_annodes(&antennas, grid.width(), grid.height(), part2);
     annodes.iter().map(|(&c, _)| c as usize).sum::<usize>()
+}
+
+pub fn part1(input: &str) -> impl Display {
+    solve(input, false)
+}
+
+pub fn part2(input: &str) -> impl Display {
+    solve(input, true)
 }
 
 #[cfg(test)]
