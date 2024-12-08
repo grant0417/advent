@@ -1,5 +1,6 @@
 use std::num::TryFromIntError;
 
+#[derive(PartialEq)]
 pub struct Point<T> {
     pub x: T,
     pub y: T,
@@ -8,6 +9,13 @@ pub struct Point<T> {
 impl<T> Point<T> {
     pub fn new(x: T, y: T) -> Self {
         Self { x, y }
+    }
+
+    pub fn map<J>(self, f: impl Fn(T) -> J) -> Point<J> {
+        Point {
+            x: f(self.x),
+            y: f(self.y),
+        }
     }
 }
 

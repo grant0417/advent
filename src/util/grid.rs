@@ -51,6 +51,24 @@ impl Grid<u8> {
             height,
         }
     }
+
+    pub fn display(&self) -> String {
+        let mut s = String::new();
+        for y in 0..self.height {
+            for x in 0..self.width {
+                let c = self[Point::new(x, y)];
+                s.push(if c == 0 {
+                    '.'
+                } else if c < 10 {
+                    (b'0' + c) as char
+                } else {
+                    c as char
+                });
+            }
+            s.push('\n');
+        }
+        s
+    }
 }
 
 impl<T> Grid<T>
