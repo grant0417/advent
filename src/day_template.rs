@@ -23,7 +23,7 @@ mod tests {
     const YEAR: u32 = 2023;
     const DAY: u32 = 1;
 
-    const EXAMPLE: &str = indoc::indoc! {"
+    const EXAMPLE: &str = indoc! {"
         0
         1
         2

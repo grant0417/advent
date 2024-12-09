@@ -5,6 +5,7 @@ pub use crate::{
     util::point::Point,
 };
 
+pub use indoc::{concatdoc, eprintdoc, formatdoc, indoc, printdoc};
 pub use itertools::Itertools;
 pub use rayon::prelude::*;
 pub use regex::{Regex, RegexSet};
