@@ -91,11 +91,7 @@ pub fn part2(input: &str) -> impl ToString {
     loop {
         let flashed = octopus_grid.step();
 
-        if flashed
-            == (octopus_grid.width * octopus_grid.height)
-                .try_into()
-                .unwrap()
-        {
+        if flashed == (octopus_grid.width * octopus_grid.height) as usize {
             break;
         }
 

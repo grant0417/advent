@@ -1,13 +1,13 @@
+use std::hash::Hash;
 use std::num::TryFromIntError;
 
-#[derive(PartialEq)]
 pub struct Point<T> {
     pub x: T,
     pub y: T,
 }
 
 impl<T> Point<T> {
-    pub fn new(x: T, y: T) -> Self {
+    pub const fn new(x: T, y: T) -> Self {
         Self { x, y }
     }
 
@@ -48,6 +48,27 @@ where
             .field(&self.x)
             .field(&self.y)
             .finish()
+    }
+}
+
+impl<T> PartialEq for Point<T>
+where
+    T: PartialEq,
+{
+    fn eq(&self, other: &Self) -> bool {
+        self.x == other.x && self.y == other.y
+    }
+}
+
+impl<T> Eq for Point<T> where T: Eq {}
+
+impl<T> Hash for Point<T>
+where
+    T: Hash,
+{
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.x.hash(state);
+        self.y.hash(state);
     }
 }
 

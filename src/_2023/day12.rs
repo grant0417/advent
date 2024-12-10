@@ -66,21 +66,21 @@ impl Record {
         counts == self.counts
     }
 
-    fn brute_force_arangements(&self) -> u64 {
+    fn brute_force_arangements(&self) -> usize {
         let unknown = self
             .springs
             .iter()
             .filter(|&&s| s == Spring::Unknown)
             .count() as u32;
 
-        let mut cnt = 0;
-        for i in 0..(2_usize.pow(unknown)) {
-            let perm = self.permutation(i);
-            if perm.is_valid() {
-                cnt += 1;
-            }
-        }
-        cnt
+        (0..(2_usize.pow(unknown)))
+            .into_par_iter()
+            .by_exponential_blocks()
+            .filter(|&i| {
+                let perm = self.permutation(i);
+                perm.is_valid()
+            })
+            .count()
     }
 }
 
@@ -93,7 +93,7 @@ pub fn part1(input: &str) -> impl Display {
     records
         .par_iter()
         .map(|r| r.brute_force_arangements())
-        .sum::<u64>()
+        .sum::<usize>()
 }
 
 pub fn part2(_input: &str) -> impl Display {

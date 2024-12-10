@@ -1,6 +1,10 @@
 [alias]
-t19 = "nextest run -E test(~2021)"
-t20 = "nextest run -E test(~2021)"
+t15 = "nextest run -E test(~2015)"
+t16 = "nextest run -E test(~2016)"
+t17 = "nextest run -E test(~2017)"
+t18 = "nextest run -E test(~2018)"
+t19 = "nextest run -E test(~2019)"
+t20 = "nextest run -E test(~2020)"
 t21 = "nextest run -E test(~2021)"
 t22 = "nextest run -E test(~2022)"
 t23 = "nextest run -E test(~2023)"
@@ -8,3 +12,6 @@ t24 = "nextest run -E test(~2024)"
 t25 = "nextest run -E test(~2025)"
 t26 = "nextest run -E test(~2026)"
 t27 = "nextest run -E test(~2027)"
+
+[build]
+rustflags = ["-C", "target-cpu=native"]

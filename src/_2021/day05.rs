@@ -97,7 +97,7 @@ impl SeaBed {
     }
 
     fn plot_horizontal_vertical(&mut self, line: &Line) {
-        // Only concider horizontal or vertical lines
+        // Only consider horizontal or vertical lines
         let line_type = line.line_type();
 
         // horizontal line

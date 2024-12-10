@@ -16,18 +16,18 @@ pub fn part1(input: &str) -> impl Display {
 
     let mut safe = 0;
     'line_loop: for line in grid {
-        let mut is_increaseing = None;
+        let mut is_increasing = None;
         let mut prev = None;
 
         for curr in line {
             if let Some(prev) = prev {
                 let increase = curr - prev > 0;
-                if let Some(is_increaseing) = is_increaseing {
-                    if is_increaseing != increase {
+                if let Some(is_increasing) = is_increasing {
+                    if is_increasing != increase {
                         continue 'line_loop;
                     }
                 }
-                is_increaseing = Some(increase);
+                is_increasing = Some(increase);
 
                 let abs_diff = curr.abs_diff(prev);
                 if abs_diff < 1 || abs_diff > 3 {
@@ -52,18 +52,18 @@ pub fn part2(input: &str) -> impl Display {
             let mut safe_line = line.clone();
             safe_line.remove(i);
 
-            let mut is_increaseing = None;
+            let mut is_increasing = None;
             let mut prev = None;
 
             for curr in safe_line {
                 if let Some(prev) = prev {
                     let increase = curr - prev > 0;
-                    if let Some(is_increaseing) = is_increaseing {
-                        if is_increaseing != increase {
+                    if let Some(is_increasing) = is_increasing {
+                        if is_increasing != increase {
                             continue 'try_loop;
                         }
                     }
-                    is_increaseing = Some(increase);
+                    is_increasing = Some(increase);
 
                     let abs_diff = curr.abs_diff(prev);
                     if abs_diff < 1 || abs_diff > 3 {

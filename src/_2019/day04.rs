@@ -11,7 +11,7 @@ fn parse_range(input: &str) -> Range<u32> {
 /// - The value is within the range given in your puzzle input.
 /// - Two adjacent digits are the same (like 22 in 122345).
 /// - Going from left to right, the digits never decrease; they only ever increase or stay the same (like 111123 or 135679).
-fn is_valid(pass: &u32, strict_adjecent: bool) -> bool {
+fn is_valid(pass: &u32, strict_adjacent: bool) -> bool {
     let pass = {
         let mut pass = *pass;
         let mut pass_arr = [0; 6];
@@ -29,7 +29,7 @@ fn is_valid(pass: &u32, strict_adjecent: bool) -> bool {
         if val > next {
             return false;
         }
-        if !strict_adjecent {
+        if !strict_adjacent {
             has_adj = has_adj || val == next;
         } else {
             has_adj = has_adj

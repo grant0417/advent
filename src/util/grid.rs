@@ -162,6 +162,25 @@ impl<T> Grid<T> {
     }
 }
 
+impl<T> Grid<T>
+where
+    T: Clone,
+{
+    pub fn fill(&mut self, start: Point<usize>, end: Point<usize>, value: T) {
+        let low_y = start.y.min(end.y);
+        let high_y = start.y.max(end.y);
+
+        let low_x = start.x.min(end.x);
+        let high_x = start.x.max(end.x);
+
+        for y in low_y..high_y {
+            let start = y * self.width + low_x;
+            let end = y * self.width + high_x;
+            self.data[start..end].fill(value.clone());
+        }
+    }
+}
+
 impl<T, P> std::ops::Index<P> for Grid<T>
 where
     P: Into<Point<usize>>,

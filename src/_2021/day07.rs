@@ -11,7 +11,7 @@ fn find_range(vals: &[i32]) -> (i32, i32) {
     (*vals.iter().min().unwrap(), *vals.iter().max().unwrap())
 }
 
-fn min_fule_linear(vals: &[i32]) -> i32 {
+fn min_fuel_linear(vals: &[i32]) -> i32 {
     let (min, max) = find_range(vals);
 
     (min..=max)
@@ -20,7 +20,7 @@ fn min_fule_linear(vals: &[i32]) -> i32 {
         .unwrap()
 }
 
-fn min_fule_exp(vals: &[i32]) -> i32 {
+fn min_fuel_exp(vals: &[i32]) -> i32 {
     let (min, max) = find_range(vals);
 
     (min..=max)
@@ -38,12 +38,12 @@ fn min_fule_exp(vals: &[i32]) -> i32 {
 
 pub fn part1(input: &str) -> impl ToString {
     let parsed_input = parse_input(input);
-    min_fule_linear(&parsed_input)
+    min_fuel_linear(&parsed_input)
 }
 
 pub fn part2(input: &str) -> impl ToString {
     let parsed_input = parse_input(input);
-    min_fule_exp(&parsed_input)
+    min_fuel_exp(&parsed_input)
 }
 
 #[cfg(test)]
