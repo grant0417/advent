@@ -50,12 +50,11 @@ pub fn part2(input: &str) -> impl Display {
     for i in 0..grid.width() - 2 {
         for j in 0..grid.height() - 2 {
             'pattern_loop: for pattern in &patterns {
-                for k in 0..3 {
-                    for l in 0..3 {
-                        let p = pattern[k][l];
+                for (k, pattern_row) in pattern.iter().enumerate() {
+                    for (l, &p) in pattern_row.iter().enumerate() {
                         if p != '.' {
-                            if let Some(&c) = grid.get((i + k, j + l)) {
-                                if c == pattern[k][l] {
+                            if let Some(&c) = grid.get((i + k, j + l).into()) {
+                                if c == p {
                                     // ok
                                 } else {
                                     continue 'pattern_loop;

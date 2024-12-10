@@ -1,7 +1,7 @@
 use crate::prelude::*;
 
 fn parse_input(input: &str) -> Vec<Grid<char>> {
-    input.split("\n\n").map(|s| Grid::parse(s)).collect()
+    input.split("\n\n").map(Grid::parse).collect()
 }
 
 pub fn part1(input: &str) -> impl Display {

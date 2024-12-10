@@ -4,11 +4,11 @@ fn parse_input(input: &str) -> Vec<u32> {
     input
         .trim()
         .chars()
-        .map(|c| c.to_digit(10).unwrap() as u32)
+        .map(|c| c.to_digit(10).unwrap())
         .collect()
 }
 
-fn step(prev: &Vec<u32>, next: &mut Vec<u32>) {
+fn step(prev: &[u32], next: &mut Vec<u32>) {
     next.clear();
     let mut i = 0;
     while i < prev.len() {

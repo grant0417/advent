@@ -46,11 +46,11 @@ fn solve(input: &str) -> Output {
 
         route_map
             .entry(r.start.clone())
-            .or_insert_with(|| Vec::new())
+            .or_insert_with(Vec::new)
             .push((r.end.clone(), r.distance));
         route_map
             .entry(r.end.clone())
-            .or_insert_with(|| Vec::new())
+            .or_insert_with(Vec::new)
             .push((r.start.clone(), r.distance));
     }
 
@@ -75,7 +75,7 @@ fn solve(input: &str) -> Output {
 
         let routes = route_map.get(&path.current_location).unwrap();
         for (dest, dist) in routes {
-            if let Err(idx) = path.visited.binary_search(&dest) {
+            if let Err(idx) = path.visited.binary_search(dest) {
                 let mut path = path.clone();
                 path.visited.insert(idx, dest.clone());
                 path.distance += *dist;

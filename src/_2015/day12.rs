@@ -20,12 +20,12 @@ fn sum_value(value: &Value, ignore_red: bool) -> i64 {
 }
 
 pub fn part1(input: &str) -> impl Display {
-    let value = serde_json::from_str::<serde_json::Value>(&input).unwrap();
+    let value = serde_json::from_str::<serde_json::Value>(input).unwrap();
     sum_value(&value, false)
 }
 
 pub fn part2(input: &str) -> impl Display {
-    let value = serde_json::from_str::<serde_json::Value>(&input).unwrap();
+    let value = serde_json::from_str::<serde_json::Value>(input).unwrap();
     sum_value(&value, true)
 }
 

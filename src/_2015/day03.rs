@@ -19,7 +19,7 @@ pub fn part1(input: &str) -> impl Display {
         }
         seen.insert(position);
     }
-    seen.iter().count()
+    seen.len()
 }
 
 pub fn part2(input: &str) -> impl Display {
@@ -43,7 +43,7 @@ pub fn part2(input: &str) -> impl Display {
         }
         seen.insert(*position);
     }
-    seen.iter().count()
+    seen.len()
 }
 
 #[cfg(test)]

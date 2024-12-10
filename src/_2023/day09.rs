@@ -6,7 +6,7 @@ fn parse_input(input: &str) -> impl Iterator<Item = Vec<i64>> + '_ {
     })
 }
 
-fn diffs_between(row: &Vec<i64>) -> Vec<i64> {
+fn diffs_between(row: &[i64]) -> Vec<i64> {
     let mut diffs = vec![];
     for i in 0..row.len() - 1 {
         diffs.push(row[i + 1] - row[i]);

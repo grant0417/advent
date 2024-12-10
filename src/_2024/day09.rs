@@ -11,14 +11,10 @@ fn expand_map(map: impl Iterator<Item = u32>) -> Vec<u16> {
     let mut id = 0;
     for (i, b) in map.enumerate() {
         if i % 2 == 0 {
-            for _ in 0..b {
-                disk.push(id);
-            }
+            disk.resize(disk.len() + b as usize, id);
             id += 1;
         } else {
-            for _ in 0..b {
-                disk.push(DISK_EMPTY);
-            }
+            disk.resize(disk.len() + b as usize, DISK_EMPTY);
         }
     }
     disk

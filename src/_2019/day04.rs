@@ -11,6 +11,7 @@ fn parse_range(input: &str) -> Range<u32> {
 /// - The value is within the range given in your puzzle input.
 /// - Two adjacent digits are the same (like 22 in 122345).
 /// - Going from left to right, the digits never decrease; they only ever increase or stay the same (like 111123 or 135679).
+#[allow(clippy::nonminimal_bool)]
 fn is_valid(pass: &u32, strict_adjacent: bool) -> bool {
     let pass = {
         let mut pass = *pass;

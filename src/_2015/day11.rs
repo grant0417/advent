@@ -1,14 +1,14 @@
 use crate::prelude::*;
 
 fn three_increasing_chars(s: &[char]) -> bool {
-    s.into_iter()
+    s.iter()
         .copied()
         .tuple_windows()
         .any(|(a, b, c)| b as i32 - a as i32 == 1 && c as i32 - b as i32 == 1)
 }
 
 fn no_confusing_chars(s: &[char]) -> bool {
-    !s.into_iter()
+    !s.iter()
         .copied()
         .any(|c| c == 'i' || c == 'o' || c == 'l')
 }

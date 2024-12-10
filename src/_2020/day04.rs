@@ -15,7 +15,7 @@ struct Passport {
 impl Passport {
     fn parse(s: &str) -> Passport {
         let mut passport = Passport::default();
-        let fields = s.trim().split_whitespace();
+        let fields = s.split_whitespace();
         for field in fields {
             let (key, value) = field.split_once(':').unwrap();
 
@@ -51,12 +51,12 @@ impl Passport {
                     let Ok(hgt) = s.parse::<u32>() else {
                         return false;
                     };
-                    hgt >= 150 && hgt <= 193
+                    (150..=193).contains(&hgt)
                 } else if let Some(s) = s.strip_suffix("in") {
                     let Ok(hgt) = s.parse::<u32>() else {
                         return false;
                     };
-                    hgt >= 59 && hgt <= 76
+                    (59..=76).contains(&hgt)
                 } else {
                     false
                 }

@@ -1,5 +1,3 @@
-use std::io::Write;
-
 use md5::Digest;
 
 use crate::prelude::*;
@@ -15,7 +13,7 @@ fn search(input: &str, part2: bool) -> usize {
             write!(buf, "{input}{i}").unwrap();
 
             let mut md5 = md5::Md5::new();
-            md5.write(buf.as_bytes()).unwrap();
+            md5.update(buf);
             let b = md5.finalize();
 
             b[0] == 0 && b[1] == 0 && ((!part2 && b[2] & 0xf0 == 0) || (part2 && b[2] == 0))

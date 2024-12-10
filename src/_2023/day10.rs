@@ -41,19 +41,19 @@ fn distance_bfs(map: &Grid<char>) -> Grid<Option<usize>> {
         };
 
         // Add edges to the queue
-        if north && y > 0 && distances.get((x, y - 1)) == Some(&None) {
+        if north && y > 0 && distances.get((x, y - 1).into()) == Some(&None) {
             queue.push_back((x, y - 1, distance + 1));
         }
 
-        if south && y < map.height() - 1 && distances.get((x, y + 1)) == Some(&None) {
+        if south && y < map.height() - 1 && distances.get((x, y + 1).into()) == Some(&None) {
             queue.push_back((x, y + 1, distance + 1));
         }
 
-        if east && x < map.width() - 1 && distances.get((x + 1, y)) == Some(&None) {
+        if east && x < map.width() - 1 && distances.get((x + 1, y).into()) == Some(&None) {
             queue.push_back((x + 1, y, distance + 1));
         }
 
-        if west && x > 0 && distances.get((x - 1, y)) == Some(&None) {
+        if west && x > 0 && distances.get((x - 1, y).into()) == Some(&None) {
             queue.push_back((x - 1, y, distance + 1));
         }
     }

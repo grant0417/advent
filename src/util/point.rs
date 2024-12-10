@@ -83,8 +83,8 @@ macro_rules! impl_ops {
             }
 
             pub fn manhattan_distance(&self, other: &Self) -> $t {
-                (self.x as i64 - other.x as i64).abs() as $t
-                    + (self.y as i64 - other.y as i64).abs() as $t
+                (self.x as i64 - other.x as i64).unsigned_abs() as $t
+                    + (self.y as i64 - other.y as i64).unsigned_abs() as $t
             }
         }
 

@@ -123,8 +123,7 @@ impl<T> Grid<T> {
     }
 
     #[inline]
-    pub fn get(&self, point: impl Into<Point<usize>>) -> Option<&T> {
-        let point = point.into();
+    pub fn get(&self, point: Point<usize>) -> Option<&T> {
         if point.x >= self.width || point.y >= self.height {
             None
         } else {
@@ -178,6 +177,15 @@ where
             let end = y * self.width + high_x;
             self.data[start..end].fill(value.clone());
         }
+    }
+}
+
+impl<T> Grid<T>
+where
+    T: Clone,
+{
+    pub fn clear_with(&mut self, v: T) {
+        self.data.fill(v);
     }
 }
 

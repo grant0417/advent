@@ -30,7 +30,7 @@ pub fn part1(input: &str) -> impl Display {
                 is_increasing = Some(increase);
 
                 let abs_diff = curr.abs_diff(prev);
-                if abs_diff < 1 || abs_diff > 3 {
+                if !(1..=3).contains(&abs_diff) {
                     continue 'line_loop;
                 }
             }
@@ -66,7 +66,7 @@ pub fn part2(input: &str) -> impl Display {
                     is_increasing = Some(increase);
 
                     let abs_diff = curr.abs_diff(prev);
-                    if abs_diff < 1 || abs_diff > 3 {
+                    if !(1..=3).contains(&abs_diff) {
                         continue 'try_loop;
                     }
                 }

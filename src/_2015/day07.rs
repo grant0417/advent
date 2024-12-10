@@ -100,8 +100,7 @@ fn parse_input(input: &str) -> impl Iterator<Item = (String, Gate)> + '_ {
 
 pub fn part1(input: &str) -> impl Display {
     let mut gates: Map = Map::from_iter(parse_input(input).map(|(k, v)| (k, (v, None))));
-    let a = eval_gate(&mut gates, "a");
-    a
+    eval_gate(&mut gates, "a")
 }
 
 pub fn part2(input: &str) -> impl Display {
@@ -117,8 +116,7 @@ pub fn part2(input: &str) -> impl Display {
             None,
         ),
     );
-    let a = eval_gate(&mut gate_clone, "a");
-    a
+    eval_gate(&mut gate_clone, "a")
 }
 
 #[cfg(test)]
