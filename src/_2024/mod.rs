@@ -18,3 +18,4 @@ pub use day08 as day8;
 pub use day08 as day9;
 pub mod day10;
 pub mod day11;
+pub mod day12;

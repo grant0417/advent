@@ -1,6 +1,8 @@
 use crate::prelude::*;
 
-fn parse_input(input: &str) -> HashMap<u64, usize> {
+type Map = HashMap<u64, usize>;
+
+fn parse_input(input: &str) -> Map {
     input
         .split_whitespace()
         .map(|i| i.parse().unwrap())
@@ -9,7 +11,7 @@ fn parse_input(input: &str) -> HashMap<u64, usize> {
         .collect()
 }
 
-fn step(arr: &HashMap<u64, usize>, new: &mut HashMap<u64, usize>) {
+fn step(arr: &Map, new: &mut Map) {
     new.clear();
     for (k, v) in arr {
         match k {
@@ -30,7 +32,7 @@ fn step(arr: &HashMap<u64, usize>, new: &mut HashMap<u64, usize>) {
     }
 }
 
-fn run(mut stones: HashMap<u64, usize>, steps: usize) -> usize {
+fn run(mut stones: Map, steps: usize) -> usize {
     let mut new = HashMap::default();
     for _ in 0..steps {
         step(&stones, &mut new);

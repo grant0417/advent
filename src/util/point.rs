@@ -72,6 +72,28 @@ where
     }
 }
 
+impl<T> PartialOrd for Point<T>
+where
+    T: PartialOrd,
+{
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(
+            self.x
+                .partial_cmp(&other.x)?
+                .then(self.y.partial_cmp(&other.y)?),
+        )
+    }
+}
+
+impl<T> Ord for Point<T>
+where
+    T: Ord,
+{
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.x.cmp(&other.x).then(self.y.cmp(&other.y))
+    }
+}
+
 macro_rules! impl_ops {
     ($t: ty) => {
         impl Point<$t> {

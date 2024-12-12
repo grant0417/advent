@@ -11,6 +11,7 @@ pub use rayon::prelude::*;
 pub use regex::{Regex, RegexSet};
 pub use rustc_hash::FxHashMap as HashMap;
 pub use rustc_hash::FxHashSet as HashSet;
+pub use std::cmp::Ordering;
 pub use std::fmt::Write as _;
 
 pub use std::fmt::Display;

@@ -7,24 +7,24 @@ struct Hand {
     bid: usize,
 }
 
-fn run_cmp(left: bool, right: bool, left_hand: &Hand, right_hand: &Hand) -> std::cmp::Ordering {
+fn run_cmp(left: bool, right: bool, left_hand: &Hand, right_hand: &Hand) -> Ordering {
     match (left, right) {
         (true, true) => left_hand.cmp_orders(right_hand),
-        (true, false) => std::cmp::Ordering::Greater,
-        (false, true) => std::cmp::Ordering::Less,
-        (false, false) => std::cmp::Ordering::Equal,
+        (true, false) => Ordering::Greater,
+        (false, true) => Ordering::Less,
+        (false, false) => Ordering::Equal,
     }
 }
 
 impl Hand {
-    fn compare_cards(&self, other: &Self) -> std::cmp::Ordering {
+    fn compare_cards(&self, other: &Self) -> Ordering {
         let five_compare = run_cmp(
             self.is_five_of_a_kind(),
             other.is_five_of_a_kind(),
             self,
             other,
         );
-        if five_compare != std::cmp::Ordering::Equal {
+        if five_compare != Ordering::Equal {
             return five_compare;
         }
 
@@ -34,12 +34,12 @@ impl Hand {
             self,
             other,
         );
-        if four_compare != std::cmp::Ordering::Equal {
+        if four_compare != Ordering::Equal {
             return four_compare;
         }
 
         let full_compare = run_cmp(self.is_full_house(), other.is_full_house(), self, other);
-        if full_compare != std::cmp::Ordering::Equal {
+        if full_compare != Ordering::Equal {
             return full_compare;
         }
 
@@ -49,29 +49,29 @@ impl Hand {
             self,
             other,
         );
-        if three_compare != std::cmp::Ordering::Equal {
+        if three_compare != Ordering::Equal {
             return three_compare;
         }
 
         let two_compare = run_cmp(self.is_two_pairs(), other.is_two_pairs(), self, other);
-        if two_compare != std::cmp::Ordering::Equal {
+        if two_compare != Ordering::Equal {
             return two_compare;
         }
 
         let one_compare = run_cmp(self.is_one_pair(), other.is_one_pair(), self, other);
-        if one_compare != std::cmp::Ordering::Equal {
+        if one_compare != Ordering::Equal {
             return one_compare;
         }
 
         self.cmp_orders(other)
     }
 
-    fn cmp_orders(&self, other: &Self) -> std::cmp::Ordering {
+    fn cmp_orders(&self, other: &Self) -> Ordering {
         for i in 0..5 {
             let left = self.cards[i];
             let right = other.cards[i];
             let compare = left.cmp(&right);
-            if compare != std::cmp::Ordering::Equal {
+            if compare != Ordering::Equal {
                 return compare;
             }
         }

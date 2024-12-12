@@ -91,41 +91,32 @@ fn map_number(map: &[Mapping], number: usize) -> usize {
     }
 }
 
+fn map_seed(maps: &Maps, seed: usize) -> usize {
+    let soil = map_number(&maps.seed_to_soil, seed);
+    let fertilizer = map_number(&maps.soil_to_fertilizer, soil);
+    let water = map_number(&maps.fertilizer_to_water, fertilizer);
+    let light = map_number(&maps.water_to_light, water);
+    let temperature = map_number(&maps.light_to_temperature, light);
+    let humidity = map_number(&maps.temperature_to_humidity, temperature);
+
+    map_number(&maps.humidity_to_location, humidity)
+}
+
 pub fn part1(input: &str) -> impl ToString {
     let (seeds, maps) = parse_input(input);
-
     seeds
         .iter()
-        .map(|seed| {
-            let soil = map_number(&maps.seed_to_soil, *seed);
-            let fertilizer = map_number(&maps.soil_to_fertilizer, soil);
-            let water = map_number(&maps.fertilizer_to_water, fertilizer);
-            let light = map_number(&maps.water_to_light, water);
-            let temperature = map_number(&maps.light_to_temperature, light);
-            let humidity = map_number(&maps.temperature_to_humidity, temperature);
-
-            map_number(&maps.humidity_to_location, humidity)
-        })
+        .map(|seed| map_seed(&maps, *seed))
         .min()
         .unwrap()
 }
 
 pub fn part2(input: &str) -> impl ToString {
-    let (seed_ranges, maps) = parse_input(input);
-
-    seed_ranges
+    let (seeds, maps) = parse_input(input);
+    seeds
         .par_chunks(2)
         .flat_map(|chunk| chunk[0]..chunk[0] + chunk[1])
-        .map(|seed| {
-            let soil = map_number(&maps.seed_to_soil, seed);
-            let fertilizer = map_number(&maps.soil_to_fertilizer, soil);
-            let water = map_number(&maps.fertilizer_to_water, fertilizer);
-            let light = map_number(&maps.water_to_light, water);
-            let temperature = map_number(&maps.light_to_temperature, light);
-            let humidity = map_number(&maps.temperature_to_humidity, temperature);
-
-            map_number(&maps.humidity_to_location, humidity)
-        })
+        .map(|seed| map_seed(&maps, seed))
         .min()
         .unwrap()
 }
@@ -192,7 +183,7 @@ mod tests {
     }
 
     #[tokio::test]
-    #[ignore = "kinda slow, takes ~15s on my computer in release, but too slow for CI"]
+    #[ignore = "slow bruteforce"]
     async fn part2_solve() {
         let input = util::input(YEAR, DAY).await;
         assert_eq!(part2(&input).to_string(), "50716416");
